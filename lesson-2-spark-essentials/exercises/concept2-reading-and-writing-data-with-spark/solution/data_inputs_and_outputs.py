@@ -14,7 +14,7 @@ spark = SparkSession \
 spark.sparkContext.getConf().getAll()
 
 # This path resides on your computer or workspace, not in HDFS
-path = "data/sparkify_log_small.json"
+path = "../../data/sparkify_log_small.json"
 user_log = spark.read.json(path)
 
 # See how Spark inferred the schema from the JSON file
@@ -24,7 +24,7 @@ user_log.show(n=1)
 user_log.take(5)
 
 # We are changing file formats
-out_path = "data/sparkify_log_small.csv"
+out_path = "../../data/sparkify_log_small.csv"
 
 # The filename alone didn't tell Spark the actual format, we need to do it here
 user_log.write.save(out_path, format="csv", header=True)

@@ -1,3 +1,4 @@
 pyspark
 numpy
 pandas
+matplotlib

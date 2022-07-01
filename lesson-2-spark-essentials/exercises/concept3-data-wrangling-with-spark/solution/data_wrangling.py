@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 
 spark = SparkSession.builder.appName("Wrangling Data").getOrCreate()
 
-path = "data/sparkify_log_small.json"
+path = "../../data/sparkify_log_small.json"
 user_log = spark.read.json(path)
 
 

@@ -19,7 +19,6 @@ import datetime
 
 import numpy as np
 import pandas as pd
-%matplotlib inline
 import matplotlib.pyplot as plt
 ```
 
@@ -33,7 +32,7 @@ spark = SparkSession \
 
 
 ```python
-path = "data/sparkify_log_small.json"
+path = "../../data/sparkify_log_small.json"
 user_log = spark.read.json(path)
 ```
 
