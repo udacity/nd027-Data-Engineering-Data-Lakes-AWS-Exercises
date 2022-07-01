@@ -14,6 +14,8 @@ Let's assume a website creates a daily JSON file  of all new customers created d
 
 We can copy a sample customer file into S3 using the the AWS Command Line Interface (CLI). In the command below the blanks should be replaced with (1) the file name you want to copy to S3, and (2) the name of the S3 bucket you created.
 
+***Note when specifying a directory in S3, always include a trailing slash `/` at the end of the directory name. If you forget the trailing slash `/`, it will be confusing, because S3 won't respond appropriately***
+
 <br data-md>
 
 `aws s3 cp ./project/starter/customers/_______ s3://_______/customer/landing/`

@@ -111,4 +111,6 @@ If the log viewer stops, click the **resume** button. It often pauses if the out
 
 # View the Generated Script
 
-To view the generated script, go back to Glue Studio, and click the **Script** tab:
+To view the generated script, go back to Glue Studio, and click the **Script** tab.
+
+Copy the code, and save it in your VS Code Workspace as customer_landing_to_trusted.py, and then push it to your GitHub Repository.
