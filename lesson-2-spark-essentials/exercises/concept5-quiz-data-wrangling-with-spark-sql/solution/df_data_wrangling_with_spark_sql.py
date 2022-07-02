@@ -26,19 +26,19 @@ spark = SparkSession \
     .getOrCreate()
 
 
-path = "../../data/sparkify_log_small.json"
-user_log = spark.read.json(path)
+path = "./lesson-2-spark-essentials/exercises/data/sparkify_log_small.json"
+user_log_df = spark.read.json(path)
 
-user_log.take(1)
+user_log_df.take(1)
 
-user_log.printSchema()
+user_log_df.printSchema()
 
 
 # # Create a View And Run Queries
 # 
 # The code below creates a temporary view against which you can run SQL queries.
 
-user_log.createOrReplaceTempView("user_log_table")
+user_log_df.createOrReplaceTempView("user_log_table")
 
 spark.sql("SELECT * FROM user_log_table LIMIT 2").show()
 
@@ -81,7 +81,7 @@ spark.sql('''
           '''
           ).show()
 
-songs_in_hour = spark.sql('''
+songs_in_hour_df = spark.sql('''
           SELECT get_hour(ts) AS hour, COUNT(*) as plays_per_hour
           FROM user_log_table
           WHERE page = "NextSong"
@@ -90,11 +90,11 @@ songs_in_hour = spark.sql('''
           '''
           )
 
-songs_in_hour.show()
+songs_in_hour_df.show()
 
 # # Converting Results to Pandas
 
-songs_in_hour_pd = songs_in_hour.toPandas()
+songs_in_hour_pd = songs_in_hour_df.toPandas()
 
 
 print(songs_in_hour_pd)

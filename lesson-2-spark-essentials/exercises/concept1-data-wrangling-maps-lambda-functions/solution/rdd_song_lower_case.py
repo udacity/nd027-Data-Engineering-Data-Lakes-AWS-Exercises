@@ -29,23 +29,23 @@ log_of_songs = [
 ]
 
 # parallelize the log_of_songs to use with Spark
-# distributed_song_log is an RDD (Reslient Distributed Dataset)
-distributed_song_log = sc.parallelize(log_of_songs)
+# distributed_song_log_rdd is an RDD (Reslient Distributed Dataset)
+distributed_song_log_rdd = sc.parallelize(log_of_songs)
 
 def convert_song_to_lowercase(song):
     return song.lower()
 
 convert_song_to_lowercase("Havana")
 
-distributed_song_log.map(convert_song_to_lowercase)
+distributed_song_log_rdd.map(convert_song_to_lowercase)
 
 
 # collect() Converts from an RDD to a list- this is an expensive operation, because it requires gathering all the data from all the nodes
-lower_case_songs=distributed_song_log.map(convert_song_to_lowercase).collect()
+lower_case_songs=distributed_song_log_rdd.map(convert_song_to_lowercase).collect()
 print(lower_case_songs)
 
 # collect() Converts from an RDD to a list - we only do this if the data is very small (ex: a list of 9 songs)
-distributed_song_log.collect()
+distributed_song_log_rdd.collect()
 
-distributed_song_log.map(lambda song: song.lower()).collect()
-distributed_song_log.map(lambda x: x.lower()).collect()
+distributed_song_log_rdd.map(lambda song: song.lower()).collect()
+distributed_song_log_rdd.map(lambda x: x.lower()).collect()

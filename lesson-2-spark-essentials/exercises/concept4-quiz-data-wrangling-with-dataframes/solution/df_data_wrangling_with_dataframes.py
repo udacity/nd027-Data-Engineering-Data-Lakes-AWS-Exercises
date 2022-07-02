@@ -23,7 +23,7 @@ spark = SparkSession \
         .appName("Data Frames practice") \
         .getOrCreate()
 
-df = spark.read.json("../../data/sparkify_log_small.json")
+logs_df = spark.read.json("./lesson-2-spark-essentials/exercises/data/sparkify_log_small.json")
 
 
 # # Question 1
@@ -31,18 +31,21 @@ df = spark.read.json("../../data/sparkify_log_small.json")
 # Which page did user id "" (empty string) NOT visit?
 
 
-df.printSchema()
+logs_df.printSchema()
 
 
 # filter for users with blank user id
-blank_pages = df.filter(df.userId == '')     .select(col('page')     .alias('blank_pages'))     .dropDuplicates()
+blank_pages_df = logs_df.filter(logs_df.userId == '') \
+    .select(col('page') \
+    .alias('blank_pages')) \
+    .dropDuplicates()
 
 # get a list of possible pages that could be visited
-all_pages = df.select('page').dropDuplicates()
+all_pages_df = logs_df.select('page').dropDuplicates()
 
 # find values in all_pages that are not in blank_pages
 # these are the pages that the blank user did not go to
-for row in set(all_pages.collect()) - set(blank_pages.collect()):
+for row in set(all_pages_df.collect()) - set(blank_pages_df.collect()):
     print(row.page)
 
 
@@ -58,7 +61,10 @@ for row in set(all_pages.collect()) - set(blank_pages.collect()):
 # How many female users do we have in the data set?
 
 
-df.filter(df.gender == 'F')     .select('userId', 'gender')     .dropDuplicates()     .count()
+logs_df.filter(logs_df.gender == 'F')  \
+    .select('userId', 'gender') \
+    .dropDuplicates() \
+    .count()
 
 
 # # Question 4
@@ -66,7 +72,13 @@ df.filter(df.gender == 'F')     .select('userId', 'gender')     .dropDuplicates(
 # How many songs were played from the most played artist?
 
 
-df.filter(df.page == 'NextSong')     .select('Artist')     .groupBy('Artist')     .agg({'Artist':'count'})     .withColumnRenamed('count(Artist)', 'Artistcount')     .sort(desc('Artistcount'))     .show(1)
+logs_df.filter(logs_df.page == 'NextSong') \
+    .select('Artist') \
+    .groupBy('Artist') \
+    .agg({'Artist':'count'}) \
+    .withColumnRenamed('count(Artist)', 'Artistcount') \
+    .sort(desc('Artistcount')) \
+    .show(1)
 
 
 # # Question 5 (challenge)
@@ -79,9 +91,15 @@ df.filter(df.page == 'NextSong')     .select('Artist')     .groupBy('Artist')   
 
 function = udf(lambda ishome : int(ishome == 'Home'), IntegerType())
 
-user_window = Window     .partitionBy('userID')     .orderBy(desc('ts'))     .rangeBetween(Window.unboundedPreceding, 0)
+user_window = Window \
+    .partitionBy('userID') \
+    .orderBy(desc('ts')) \
+    .rangeBetween(Window.unboundedPreceding, 0)
 
-cusum = df.filter((df.page == 'NextSong') | (df.page == 'Home'))     .select('userID', 'page', 'ts')     .withColumn('homevisit', function(col('page')))     .withColumn('period', Fsum('homevisit').over(user_window))
+cusum = logs_df.filter((logs_df.page == 'NextSong') | (logs_df.page == 'Home'))     .select('userID', 'page', 'ts')     .withColumn('homevisit', function(col('page')))     .withColumn('period', Fsum('homevisit').over(user_window))
 
-cusum.filter((cusum.page == 'NextSong'))     .groupBy('userID', 'period')     .agg({'period':'count'})     .agg({'count(period)':'avg'}).show()
+cusum.filter((cusum.page == 'NextSong')) \
+    .groupBy('userID', 'period') \
+    .agg({'period':'count'}) \
+    .agg({'count(period)':'avg'}).show()
 
