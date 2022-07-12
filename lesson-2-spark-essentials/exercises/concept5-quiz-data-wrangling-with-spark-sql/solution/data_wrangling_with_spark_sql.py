@@ -26,7 +26,7 @@ spark = SparkSession \
     .getOrCreate()
 
 
-path = "./lesson-2-spark-essentials/exercises/data/sparkify_log_small.json"
+path = "./lesson-2-spark-essentials/exercises/data/sparkify_log_small_2.json"
 user_log_df = spark.read.json(path)
 
 user_log_df.take(1)
