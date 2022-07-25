@@ -42,7 +42,7 @@ CustomerTrusted_node3 = glueContext.getSink(
     transformation_ctx="CustomerTrusted_node3",
 )
 CustomerTrusted_node3.setCatalogInfo(
-    catalogDatabase="stedi2", catalogTableName="customer_trusted"
+    catalogDatabase="seans-stedi-database", catalogTableName="customer_trusted"
 )
 CustomerTrusted_node3.setFormat("json")
 CustomerTrusted_node3.writeFrame(FilterbyOptIn_node2)

@@ -52,9 +52,7 @@ aws iam put-role-policy --role-name my-glue-service-role --policy-name S3Access 
 Last, give Glue access to data in special S3 buckets used for Glue configuration, and several other resources:
 
 ```
-aws iam put-role-policy --role-name my-glue-service-role --policy-name GlueAccess
-
-{
+aws iam put-role-policy --role-name my-glue-service-role --policy-name GlueAccess --policy-document '{
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -146,5 +144,5 @@ aws iam put-role-policy --role-name my-glue-service-role --policy-name GlueAcces
             ]
         }
     ]
-}
+}'
 ```
