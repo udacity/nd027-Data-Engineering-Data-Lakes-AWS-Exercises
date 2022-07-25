@@ -29,7 +29,7 @@ First use the AWS CLI to identify the VPC that needs access to S3:
 
 The output should looks something like this (look for the VpcId in the output):
 
-```undefined
+```
 {
     "Vpcs": [
         {
@@ -89,7 +89,7 @@ Finally create the S3 Gateway, replacing the blanks with the **VPC** and **Routi
 
 <br data-md>
 
-`aws ec2 create-vpc-endpoint --vpc-id _______ --service-name com.amazonaws.region.s3 \
+`aws ec2 create-vpc-endpoint --vpc-id _______ --service-name com.amazonaws.us-east-1.s3 \
   --route-table-ids _______`
 
 
