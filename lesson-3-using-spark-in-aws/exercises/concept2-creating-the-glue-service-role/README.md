@@ -34,7 +34,7 @@ aws iam put-role-policy --role-name my-glue-service-role --policy-name S3Access 
                 "s3:ListBucket"
             ],
             "Resource": [
-                "arn:aws:s3:::_______"
+                "arn:aws:s3:::stedi-lakehouse"
             ]
         },
         {
@@ -42,7 +42,7 @@ aws iam put-role-policy --role-name my-glue-service-role --policy-name S3Access 
             "Effect": "Allow",
             "Action": "s3:*Object",
             "Resource": [
-                "arn:aws:s3:::_______/*"
+                "arn:aws:s3:::stedi-lakehouse/*"
             ]
         }
     ]
