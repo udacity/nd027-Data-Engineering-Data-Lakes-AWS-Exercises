@@ -8,7 +8,7 @@
 
 
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import isnan, count, when, col, desc, udf, col, sort_array, asc, avg
+from pyspark.sql.functions import col, desc, udf, col
 from pyspark.sql.functions import sum as Fsum
 from pyspark.sql.window import Window
 from pyspark.sql.types import IntegerType
@@ -45,6 +45,7 @@ all_pages_df = logs_df.select('page').dropDuplicates()
 
 # find values in all_pages that are not in blank_pages
 # these are the pages that the blank user did not go to
+# NOTE WE SHOULD NOT USE .collect() on large datasets (>100 MB)
 for row in set(all_pages_df.collect()) - set(blank_pages_df.collect()):
     print(row.page)
 
@@ -60,12 +61,12 @@ for row in set(all_pages_df.collect()) - set(blank_pages_df.collect()):
 # 
 # How many female users do we have in the data set?
 
-
+print(
 logs_df.filter(logs_df.gender == 'F')  \
     .select('userId', 'gender') \
     .dropDuplicates() \
     .count()
-
+)
 
 # # Question 4
 # 
@@ -96,10 +97,17 @@ user_window = Window \
     .orderBy(desc('ts')) \
     .rangeBetween(Window.unboundedPreceding, 0)
 
-cusum = logs_df.filter((logs_df.page == 'NextSong') | (logs_df.page == 'Home'))     .select('userID', 'page', 'ts')     .withColumn('homevisit', function(col('page')))     .withColumn('period', Fsum('homevisit').over(user_window))
+cusum = logs_df.filter((logs_df.page == 'NextSong') | (logs_df.page == 'Home'))   \
+    .select('userID', 'page', 'ts')     .withColumn('homevisit', function(col('page')))   \
+    .withColumn('period', Fsum('homevisit') \
+    .over(user_window)) 
+    
+cusum.show()
+
 
 cusum.filter((cusum.page == 'NextSong')) \
     .groupBy('userID', 'period') \
     .agg({'period':'count'}) \
-    .agg({'count(period)':'avg'}).show()
+    .agg({'count(period)':'avg'}) \
+    .show()
 

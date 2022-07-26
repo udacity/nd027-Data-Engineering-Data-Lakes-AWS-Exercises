@@ -12,8 +12,14 @@
 #
 ###
 
-import pyspark
-sc = pyspark.SparkContext(appName="maps_and_lazy_evaluation_example")
+from pyspark.sql import SparkSession
+
+# Because we aren't running on a spark cluster, the session is just for development
+spark = SparkSession \
+    .builder \
+    .appName("Maps and Lazy Evaluation Example") \
+    .getOrCreate()
+
 
 # Starting off with a regular python list
 log_of_songs = [
@@ -30,22 +36,30 @@ log_of_songs = [
 
 # parallelize the log_of_songs to use with Spark
 # distributed_song_log_rdd is an RDD (Reslient Distributed Dataset)
-distributed_song_log_rdd = sc.parallelize(log_of_songs)
+distributed_song_log_rdd = spark.sparkContext.parallelize(log_of_songs)
+
+# notice we DO NOT use the .collect() method. What is the difference between
+# .collect() and .foreach() ? 
+# .collect() forces all the data from the entire RDD on all nodes 
+# to be collected from ALL the nodes, which kills productivity, and could crash
+# .foreach() allows the data to stay on each of the independent nodes
+
+# show the original input data is preserved
+distributed_song_log_rdd.foreach(print)
 
 def convert_song_to_lowercase(song):
     return song.lower()
 
-convert_song_to_lowercase("Havana")
-
-distributed_song_log_rdd.map(convert_song_to_lowercase)
+print(convert_song_to_lowercase("Havana"))
 
 
-# collect() Converts from an RDD to a list- this is an expensive operation, because it requires gathering all the data from all the nodes
-lower_case_songs=distributed_song_log_rdd.map(convert_song_to_lowercase).collect()
-print(lower_case_songs)
+# toDF() Converts from an RDD to a DataFrame- this allows us to use convenient functions like show() 
+lower_case_songs=distributed_song_log_rdd.map(convert_song_to_lowercase)
+lower_case_songs.foreach(print)
 
-# collect() Converts from an RDD to a list - we only do this if the data is very small (ex: a list of 9 songs)
-distributed_song_log_rdd.collect()
+# Show the original input data is still mixed case
+distributed_song_log_rdd.foreach(print)
 
-distributed_song_log_rdd.map(lambda song: song.lower()).collect()
-distributed_song_log_rdd.map(lambda x: x.lower()).collect()
+# Use lambda functions instead of named functions to do the same map operation
+distributed_song_log_rdd.map(lambda song: song.lower()).foreach(print)
+distributed_song_log_rdd.map(lambda x: x.lower()).foreach(print)
