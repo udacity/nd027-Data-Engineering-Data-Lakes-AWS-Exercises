@@ -15,10 +15,6 @@ aws s3 ls s3://_______/accelerometer/landing/
 ```
 # Handling Sensitive Data
 
-Data lakes are a hazard for privacy enforcement. Data from many sources containing Personally Identifiable Information are brought in from a variety of sources. These sources contain sensitive data, without enforcing privacy constraints.
-
-<br data-md>
-
 Data in the landing zone should be dealt with very carefully. It shouldn't be made available for analytics or business intelligence.
 
 # Define a Glue Table for the Landing Zone
