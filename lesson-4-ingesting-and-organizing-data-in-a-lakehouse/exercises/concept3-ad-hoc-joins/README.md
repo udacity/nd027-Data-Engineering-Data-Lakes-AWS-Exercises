@@ -6,6 +6,8 @@ Data lakes are a hazard for privacy enforcement. Data from many sources containi
 
 Data in the **landing zone** should not be made available for data analysis without proper scrubbing. One way to filter data is based on opt in flags on the customer record. If we are dealing with the customer record directly, and this is where that field is located, we are in good shape. Often the data we are dealing with are secondary to the customer record, such as website analytics, transaction history, or other events.
 
+![Joining Multiple Datasources](./images/four-tables.png)
+
 # Joining Multiple Data Sources
 
 As with most SQL databases, if you have two or more glue tables that share a common field (foreign key), you can join the two tables on the common field. The result is a composite of the fields from both records. 
@@ -21,6 +23,8 @@ Using glue you can do joins between multiple data sources.  You can then add fil
 *Hint: as with most SQL Databases, glue tables don't require strictly defined foreign keys*
 
 As with any SQL select statement, we have to first choose the primary table in our select statement. In our case it will be the **customer** table.
+
+![Customer Trusted Zone and Accelerometer Landing Zone](./images/two-tables.png)
 
 We need to identify which columns should be used for the join. As you can see, there are no fields with matching names. However, there are two fields with matching data.
 
