@@ -77,8 +77,8 @@ logs_df.filter(logs_df.page == 'NextSong') \
     .select('Artist') \
     .groupBy('Artist') \
     .agg({'Artist':'count'}) \
-    .withColumnRenamed('count(Artist)', 'Artistcount') \
-    .sort(desc('Artistcount')) \
+    .withColumnRenamed('count(Artist)', 'Playcount') \
+    .sort(desc('Playcount')) \
     .show(1)
 
 
@@ -90,24 +90,32 @@ logs_df.filter(logs_df.page == 'NextSong') \
 
 # TODO: filter out 0 sum and max sum to get more exact answer
 
-function = udf(lambda ishome : int(ishome == 'Home'), IntegerType())
-
 user_window = Window \
     .partitionBy('userID') \
     .orderBy(desc('ts')) \
     .rangeBetween(Window.unboundedPreceding, 0)
 
-cusum = logs_df.filter((logs_df.page == 'NextSong') | (logs_df.page == 'Home'))   \
-    .select('userID', 'page', 'ts')     .withColumn('homevisit', function(col('page')))   \
+ishome = udf(lambda ishome : int(ishome == 'Home'), IntegerType())
+
+# Filter only NextSong and Home pages, add 1 for each time they visit Home
+# Adding a column called period which is a specific interval between Home visits
+cusum = logs_df.filter((logs_df.page == 'NextSong') | (logs_df.page == 'Home')) \
+    .select('userID', 'page', 'ts') \
+    .withColumn('homevisit', ishome(col('page'))) \
     .withColumn('period', Fsum('homevisit') \
     .over(user_window)) 
     
-cusum.show()
+# This will only show 'Home' in the first several rows due to default sorting
+
+cusum.show(300)
 
 
+# See how many songs were listened to on average during each period
 cusum.filter((cusum.page == 'NextSong')) \
     .groupBy('userID', 'period') \
     .agg({'period':'count'}) \
     .agg({'count(period)':'avg'}) \
     .show()
+
+
 

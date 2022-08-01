@@ -40,11 +40,8 @@ user_log_df.printSchema()
 # Describe the dataframe
 user_log_df.describe().show()
 
-# Describe the statistics for the dataset on the artist column specifically
-user_log_df.describe("artist").show()
-
-# Describe the statistics for the dataset on the sessionId column specifically
-user_log_df.describe("sessionId").show()
+# Describe the statistics for the song length column
+user_log_df.describe("length").show()
 
 # Count the rows in the dataframe
 print(
@@ -54,7 +51,7 @@ print(
 # Select the page column, drop the duplicates, and sort by page
 user_log_df.select("page").dropDuplicates().sort("page").show()
 
-# Select several columns where userId is 1046
+# Select data for all pages where userId is 1046
 user_log_df.select(["userId", "firstname", "page", "song"]) \
     .where(user_log_df.userId == "1046") \
     .show()
@@ -66,9 +63,11 @@ get_hour = udf(lambda x: datetime.datetime.fromtimestamp(x / 1000.0). hour)
 user_log_df = user_log_df.withColumn("hour", get_hour(user_log_df.ts))
 
 print(
+    # Get the first row
     user_log_df.head(1)
 )
 
+# Select just the NextSong page
 songs_in_hour_df = user_log_df.filter(user_log_df.page == "NextSong") \
     .groupby(user_log_df.hour) \
     .count() \
@@ -94,22 +93,27 @@ plt.show()
 # subset = list of columns to consider
 user_log_valid_df = user_log_df.dropna(how = "any", subset = ["userId", "sessionId"])
 
+# How many are there now that we dropped rows with null userId or sessionId?
+print(
 user_log_valid_df.count()
+)
 
-# select only unique user ids
+# select all unique user ids into a dataframe
 user_log_df.select("userId") \
     .dropDuplicates() \
     .sort("userId").show()
 
-# Show all valid users
+# Select only data for where the userId column isn't an empty string (different from null)
 user_log_valid_df = user_log_valid_df.filter(user_log_valid_df["userId"] != "")
 
-user_log_valid_df.count()
-
+# Notice the count has dropped after dropping rows with empty userId
+print(
+    user_log_valid_df.count()
+)
 
 # # Users Downgrade Their Accounts
 # 
-# Find when users downgrade their accounts and then flag those log entries. 
+# Find when users downgrade their accounts and then show those log entries. 
 
 user_log_valid_df.filter("page = 'Submit Downgrade'") \
     .show()
@@ -118,14 +122,16 @@ user_log_df.select(["userId", "firstname", "page", "level", "song"]) \
     .where(user_log_df.userId == "1138") \
     .show()
 
-# Create a user defined function
+# Create a user defined function to return a 1 if the record contains a downgrade
 flag_downgrade_event = udf(lambda x: 1 if x == "Submit Downgrade" else 0, IntegerType())
 
-# Select data using the user defined function
+# Select data including the user defined function
 user_log_valid_df = user_log_valid_df \
     .withColumn("downgraded", flag_downgrade_event("page"))
 
-user_log_valid_df.head()
+print(
+    user_log_valid_df.head()
+)
 
 from pyspark.sql import Window
 
@@ -135,12 +141,15 @@ windowval = Window.partitionBy("userId") \
     .orderBy(desc("ts")) \
     .rangeBetween(Window.unboundedPreceding, 0)
 
-# How many times has the user downgraded as of the time each event occurred?
+# Fsum is a cumulative sum over a window - in this case a window showing all events for a user
+# Add a column called phase, 0 if the user hasn't downgraded yet, 1 if they have
 user_log_valid_df = user_log_valid_df \
     .withColumn("phase", Fsum("downgraded") \
     .over(windowval))
 
+user_log_valid_df.show()    
 
+# Show the phases for user 1138 
 user_log_valid_df \
     .select(["userId", "firstname", "ts", "page", "level", "phase"]) \
     .where(user_log_df.userId == "1138") \
