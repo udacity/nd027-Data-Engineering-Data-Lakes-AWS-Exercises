@@ -78,9 +78,15 @@ We can partition a table based on the index, or field, so that data is separated
 
 Now that you have defined a table using the glue catalog, you might want to query the table. Previously we had to use Spark SQL and relied on Spark schemas to query data. Using the glue data catalog, we can query data using Athena.
 
-Let's go over to Athena, and query the customer_landing_zone table.
+Let's go over to Athena, and query the customer_landing table.
 
-Enter a simple query like: `select * from customer_landing_zone` and click run.
+Athena uses S3 to store query results. Set up the location Athena will use from now going forward.
+
+Click the View Settings button.
+
+Enter the full S3 path you want Athena to save query results. Encryption makes it less likely that sensitive data will be compromised. For this exercise we will skip encryption.
+
+Enter a simple query like: `select * from customer_landing` and click run.
 
 Now that you see results, you can use any desired SQL query parameters further refine your query and analyze the data in the landing zone.
 
@@ -88,4 +94,10 @@ Now that you see results, you can use any desired SQL query parameters further r
 
 Sometimes, it is helpful to pass on the schema definition in git, to other co-workers, for example. The easiest way to pass on a schema is through DDL (Data Definition Language) SQL statements. Now that you've generated a table in glue, you can reverse engineer it, or generate the SQL statements.
 
-Under tables, click the three dots next to `customer_landing`, and click Generate table DDL:
+Under tables, click the three dots next to `customer_landing`, and click Generate table DDL.
+
+Save the script as `customer_landing.sql`.
+
+Copy the script and name it `customer_trusted.sql`. Modify the S3 location and table name.
+
+Run the `customer_trusted.sql` script to create the `customer_trusted` table.
