@@ -83,6 +83,8 @@ Next, identify the routing table (look for the RouteTableId):
 
 ```
 
+**Hint: If the RouteTables come back empty: [], go to the Route Tables Page in AWS, and it will generate one automatically**
+
 <br data-md>
 
 Finally create the S3 Gateway, replacing the blanks with the **VPC** and **Routing Table Ids**:
