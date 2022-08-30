@@ -98,6 +98,6 @@ Under tables, click the three dots next to `customer_landing`, and click Generat
 
 Save the script as `customer_landing.sql`.
 
-Copy the script and name it `customer_trusted.sql`. Modify the S3 location and table name.
+Repeat the steps above for the `customer_trusted` table. 
 
-Run the `customer_trusted.sql` script to create the `customer_trusted` table.
+**Hint: Choose Parquet for the format**

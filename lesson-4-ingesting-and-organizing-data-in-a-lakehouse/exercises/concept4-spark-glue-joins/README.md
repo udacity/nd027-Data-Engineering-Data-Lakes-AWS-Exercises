@@ -43,15 +43,12 @@ As promised, now we change the Transform from **ApplyMapping** to **Join**
 
 Check out our newly created join!
 
-Connect the **Customer Trusted Zone** node
+Connect the **Customer Trusted Zone** node.
 
-Click Add Condition
+Click Add Condition.
 
-Choose the join fields you identified earlier to join accelerometer and customer
+Choose the join fields you identified earlier to join accelerometer and customer.
 
-* Click the data target (Accelerometer Trusted zone)
-* You should see the data target properties tab open
-* Notice that the option **Do not update the Data Catalog** has been selected
 
 Congratulations! You have created a join that will automatically drop Accelerometer rows unless they can be joined to a customer record in the **Trusted Zone:**
 
@@ -76,7 +73,6 @@ Click the Transform drop-down, and choose the **Drop Fields** transformation. Co
 * remove fields that do not belong to accelerometer
 * load data to the Accelerometer S3 Trusted Zone (**we already have this node, just make Drop Fields its parent)**
 
-**HINT: The Drop Fields transformation defaults to the wrong location (after the Data Target)**
 
 Click save and then click **Run**.
 

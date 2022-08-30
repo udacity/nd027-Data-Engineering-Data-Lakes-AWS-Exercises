@@ -21,11 +21,18 @@ Data in the landing zone should be dealt with very carefully. It shouldn't be ma
 
 Now that you have some data in the landing zone you can define a glue table to make ad hoc querying easier. The landing zone should not be used for reporting or analytics, since the data is not  qualified to be used for those purposes. However, you may want to get an idea of what the data looks like:
 
-- Go to Athena, select the database, and create a new table from S3 bucket data
-- Name the table something appropriate for the landing zone, choose the database, and enter a path ending with a slash
-- Choose the JSON data format, and add column names and types
-- Preview the create table query and click **create table**
-- Copy the table query, and save it as accelerometer_landing.sql, then push it to your GitHub repository
+Look at a sample JSON record:
+
+```
+{
+    "user":"Christina.Huey@test.com","timeStamp":1655296571764,
+    "x":-1.0,
+    "y":-1.0,
+    "z":-1.0
+}
+```
+
+Following the same steps used to create the customer landing zone, repeat to create the accelerometer landing zone.
 
 # Query Some Sample Data
 

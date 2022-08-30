@@ -18,7 +18,7 @@ We can copy a sample customer file into S3 using the the AWS Command Line Interf
 
 <br data-md>
 
-`aws s3 cp ./project/starter/customers/_______ s3://_______/customer/landing/`
+`aws s3 cp ./project/starter/customer/_______ s3://_______/customer/landing/`
 
 <br data-md>
 

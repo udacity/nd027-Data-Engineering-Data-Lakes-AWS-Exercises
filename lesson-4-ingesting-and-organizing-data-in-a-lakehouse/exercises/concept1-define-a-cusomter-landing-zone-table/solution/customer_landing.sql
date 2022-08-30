@@ -1,4 +1,4 @@
-CREATE EXTERNAL TABLE `customer_trusted`(
+CREATE EXTERNAL TABLE `customer_landing`(
   `customername` string COMMENT 'from deserializer', 
   `email` string COMMENT 'from deserializer', 
   `phone` string COMMENT 'from deserializer', 
@@ -17,6 +17,6 @@ STORED AS INPUTFORMAT
 OUTPUTFORMAT 
   'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
 LOCATION
-  's3://seans-stedi-lakehouse/customer/trusted/'
+  's3://seans-stedi-lakehouse/customer/landing/'
 TBLPROPERTIES (
   'classification'='json')

@@ -22,7 +22,7 @@ Using glue you can do joins between multiple data sources.  You can then add fil
 
 *Hint: as with most SQL Databases, glue tables don't require strictly defined foreign keys*
 
-As with any SQL select statement, we have to first choose the primary table in our select statement. In our case it will be the **customer** table.
+As with any SQL select statement, we have to first choose the primary table in our select statement. In our case it will be the **customer_trusted** table.
 
 ![Customer Trusted Zone and Accelerometer Landing Zone](./images/two-tables.png)
 
