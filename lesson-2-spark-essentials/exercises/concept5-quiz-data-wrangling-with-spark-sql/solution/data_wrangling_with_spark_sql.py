@@ -29,7 +29,6 @@ user_log_df.printSchema()
 
 user_log_df.createOrReplaceTempView("user_log_table")
 
-
 spark.sql('''
           SELECT * 
           FROM user_log_table 
