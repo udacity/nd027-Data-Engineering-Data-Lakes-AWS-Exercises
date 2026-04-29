@@ -83,7 +83,8 @@ plt.xlim(-1, 24)
 plt.ylim(0, 1.2 * max(songs_in_hour_pd["count"]))
 plt.xlabel("Hour")
 plt.ylabel("Songs played")
-plt.show()
+# plt.show()
+plt.savefig("songs_played_per_hour.png")
 
 
 # # Drop Rows with Missing Values
