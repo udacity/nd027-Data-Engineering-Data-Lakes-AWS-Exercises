@@ -2,11 +2,9 @@
 
 To use Glue Studio, search for it in the AWS Console. Then click the **AWS Glue Studio** menu option.
 
-Select **Jobs** from the Glue Studio Menu
+Select **ETL jobs** from the AWS Glue menu, then click the **Visual ETL** button to create a blank Glue Job through the visual ETL editor. You should see an empty visual data flow.
 
-To get started, go with the default selection - **Visual with a source and a target,** and click **Create**
-
-Before we forget, under **Job Details **create a **name** for the Job, and choose the **IAM Role **the job will use during execution. This should be the Glue Service Role you created earlier.
+Before we forget, under **Job Details** create a **name** for the Job, and choose the **IAM Role** the job will use during execution. This should be the Glue Service Role you created earlier.
 
 # Ingest Customer Data
 
@@ -24,7 +22,7 @@ We can copy a sample customer file into S3 using the the AWS Command Line Interf
 
 # Privacy Filter
 
-One of the most important transformations is excluding Personally Identifiable Information (PII). Glue has an out-of-the-box filter, but we are going to make our own. For the **source** in your Glue Studio Job, choose the S3 bucket you created earlier, with the folder containing the **raw** or **landing** customer data. The folder should have a forward-slash / on the end. 
+One of the most important transformations is excluding Personally Identifiable Information (PII). Glue has an out-of-the-box filter, but we are going to make our own. For the **source** in your Glue Studio Job, click the **+** button and pick **Amazon S3** from the **Sources** tab, then choose the S3 bucket you created earlier, with the folder containing the **raw** or **landing** customer data. The folder should have a forward-slash / on the end. 
 
 *Under Node properties, name the Data source appropriately, for example: Customer Landing or Customer Raw.*
 
@@ -42,7 +40,7 @@ For your destination choose an S3 location for customers who have chosen to shar
 
 You will notice the red triangle at the top of the screen saying "Job has not been saved." Click the Save button, then click Run:
 
-On the green ribbon, click the** Run Details** link
+On the green ribbon, click the **Run Details** link
 
 You will then see the run details. By default the job will run three times before quitting. To view the logs, click the **Error Logs** link. This includes all of the non-error logs as well.
 
