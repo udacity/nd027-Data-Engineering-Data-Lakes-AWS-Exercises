@@ -15,7 +15,8 @@ spark = SparkSession \
     .getOrCreate()
 
 
-path = "/workspace/home/nd027-Data-Engineering-Data-Lakes-AWS-Exercises/lesson-2-spark-essentials/exercises/data/sparkify_log_small_2.json"
+#path = "/workspace/home/nd027-Data-Engineering-Data-Lakes-AWS-Exercises/lesson-2-spark-essentials/exercises/data/sparkify_log_small_2.json"
+path = "/Users/sheetalpratik/Documents/GitHub/SheetalPratik09/nd027-Data-Engineering-Data-Lakes-AWS-Exercises/lesson-2-spark-essentials/exercises/data/sparkify_log_small_2.json"
 user_log_df = spark.read.json(path)
 
 user_log_df.take(1)
@@ -138,6 +139,7 @@ query = """
 result = spark.sql(query)
 
 # Print the result
+print("Female Count")
 result.show()
 
 # # Question 4
